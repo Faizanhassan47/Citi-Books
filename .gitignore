@@ -1,0 +1,4 @@
+backend/.env
+backend/*.log
+apps/web/*.log
+backend/node_modules

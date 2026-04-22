@@ -1,0 +1,23 @@
+:root {
+  --brand-blue: #3e7bbd;
+  --brand-green: #90c845;
+  --brand-purple: #4e3b80;
+  --brand-purple-soft: #7a6893;
+  --brand-pink: #f5bfdc;
+  --brand-sky: #82c9ff;
+  --brand-orange: #ff764e;
+  --ink: #1d2130;
+  --muted: #6d7488;
+  --panel: rgba(255, 255, 255, 0.88);
+  --line: rgba(80, 69, 132, 0.12);
+  --shadow: 0 24px 50px rgba(48, 49, 89, 0.12);
+  --shadow-soft: 0 14px 32px rgba(66, 66, 103, 0.08);
+  --radius-xl: 32px;
+  --radius-lg: 24px;
+  --radius-md: 18px;
+  --radius-sm: 14px;
+  --page-bg:
+    radial-gradient(circle at top left, rgba(233, 173, 211, 0.95), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(95, 174, 242, 0.95), transparent 28%),
+    linear-gradient(135deg, #f6d4ea 0%, #f5f7ff 44%, #c5e1ff 100%);
+}

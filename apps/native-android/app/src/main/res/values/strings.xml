@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CitiBooks</string>
+    <string name="employee_login">Employee login connected to the shared backend</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="demo_credentials">Demo credentials: employee / employee123</string>
+    <string name="login_error">Please enter username and password.</string>
+    <string name="welcome_employee">Welcome, %1$s</string>
+    <string name="dashboard_subtitle">Daily employee operations powered by the same backend as the web app</string>
+    <string name="my_attendance">My Attendance</string>
+    <string name="attendance_status">Checked in today. Check-out available from the attendance API.</string>
+    <string name="my_tasks">My Tasks</string>
+    <string name="task_summary">2 assigned tasks. Priority and status updates should sync with /tasks.</string>
+    <string name="quick_actions">Quick Actions</string>
+    <string name="action_summary">Add client, create demand, update task status, and manage profile.</string>
+</resources>

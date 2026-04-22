@@ -1,0 +1,267 @@
+CitiBooks Final System Architecture (Web + Native)
+
+1. Project Structure
+
+CitiBooks will be developed as a hybrid system:
+
+- Web Application -> For Shop Owners
+- Native Android Application -> For Employees
+- Shared Backend -> Node.js + Express
+- Database -> MongoDB
+- Image Storage -> Cloudinary
+
+2. User Types
+
+The system will have two types of users:
+
+2.1 Shop Owner
+- Maximum: 3 users
+- Full system access
+
+2.2 Employee
+- Maximum: 20 users
+- Limited access
+
+3. Global System Rules
+
+- Maximum 3 Shop Owners
+- Maximum 20 Employees
+- Only Shop Owners can create users
+- Only Shop Owners can promote employees
+- Employees cannot access restricted modules
+- Each user has a unique ID
+- Users are displayed by name but stored with unique ID
+
+4. Web Application (Shop Owner Panel)
+
+4.1 Purpose
+The web app is designed for full system control and management.
+
+4.2 Web App Features
+
+Dashboard
+- Total employees
+- Present / absent today
+- Total tasks
+- Pending tasks
+- Total clients
+- Total demands
+- Total dues
+
+User Management
+- Create Employee ID
+- Edit Employee
+- Deactivate Employee
+- Promote Employee to Owner
+- Enforce limits:
+  - Max 3 Owners
+  - Max 20 Employees
+
+Attendance Management
+- View all attendance
+- Daily report
+- Monthly report
+
+Task Management
+- Create task
+- Assign task
+- Set priority
+- Set due date
+- Track status
+
+Client Management
+- View all clients
+- View full contact numbers
+- Edit clients
+- Add notes
+
+Demand Management
+- Create categories
+- Create subcategories
+- View all demands
+- Approve / reject demands
+- Update demand status
+
+Bills Management
+- Create bills
+- Upload bill images (Cloudinary)
+- View all bills
+- Track dues
+- Assign bill access (optional)
+
+Permissions Management
+- Grant/revoke access to employees
+- Control module access
+
+Owner Controls
+- Promote employee to owner (if less than 3)
+- Demote owner
+- Ensure at least 1 owner remains
+
+5. Native Android App (Employee App)
+
+5.1 Purpose
+The mobile app is designed for daily worker operations.
+
+5.2 App Technology
+- Native Android
+- Java
+- XML UI
+
+5.3 Employee Features
+
+Login
+- Username + Password
+- Role-based login
+
+Dashboard
+- My attendance
+- My tasks
+- Quick actions
+
+Attendance
+- Check-in
+- Check-out
+- View own attendance
+
+Tasks
+- View assigned tasks
+- Update task status
+
+Clients
+- Add client
+- View client list (limited)
+- Contact number masked
+
+Example:
+- 03******567
+
+Demand
+- Add demand
+- Select category/subcategory
+- View demand status
+
+Profile
+- View name
+- Change password
+
+5.4 Employee Restrictions
+
+Employees cannot:
+- Access bills
+- View full client contact
+- Create users
+- Promote users
+- Manage categories
+- View full reports
+
+6. Backend (Shared System)
+
+6.1 Technology
+- Node.js
+- Express.js
+- MongoDB
+- Cloudinary
+
+6.2 Responsibilities
+- Authentication (JWT)
+- User management
+- Role validation
+- Limit validation (owners/employees)
+- Data storage
+- API handling
+- Security enforcement
+
+7. Database Collections
+
+- users
+- attendance
+- tasks
+- clients
+- categories
+- subcategories
+- demands
+- bills
+
+8. User ID Structure
+
+Example
+
+Shop Owner
+- OWN001
+- OWN002
+
+Employee
+- EMP001
+- EMP002
+
+Fields
+- userCode
+- name
+- username
+- passwordHash
+- role
+- isActive
+- createdBy
+- createdAt
+
+9. Important Validations
+
+Owner Validation
+- Cannot exceed 3 owners
+- Cannot remove last owner
+
+Employee Validation
+- Cannot exceed 20 employees
+- Username must be unique
+
+Login Validation
+- Only active users can login
+- Role decides access
+
+10. Security Rules
+
+- JWT authentication
+- Password hashing (bcrypt)
+- Role-based access control
+- Permission checks in backend
+- Restricted data masking (client contact)
+- File validation for uploads
+
+11. System Flow
+
+Login -> Role Check -> Redirect
+
+- Shop Owner -> Web Dashboard
+- Employee -> Mobile Dashboard
+
+12. Final System Design
+
+Web App (Owner):
+- Full control panel
+- Data management
+- Reports and admin
+
+Mobile App (Employee):
+- Daily operations
+- Attendance
+- Tasks
+- Client and demand entry
+
+Backend:
+- Central system
+- Shared APIs
+- Secure data handling
+
+13. Final Conclusion
+
+CitiBooks will be built as a dual-platform system:
+
+- Web Application for Shop Owners (full control)
+- Native Android Application for Employees (limited operations)
+
+This architecture ensures:
+- Better usability
+- Strong security
+- Clear role separation
+- Scalable system design
