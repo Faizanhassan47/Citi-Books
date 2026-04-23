@@ -82,4 +82,13 @@ router.patch("/:id/status", async (req, res) => {
   res.json(demand);
 });
 
+router.delete("/:id", async (req, res) => {
+  if (!requireOwner(req, res)) return;
+  const index = db.demands.findIndex((item) => item.id === req.params.id);
+  if (index === -1) return res.status(404).json({ message: "Demand not found" });
+  db.demands.splice(index, 1);
+  await syncCollection("demands");
+  res.json({ message: "Demand deleted" });
+});
+
 export default router;

@@ -1,0 +1,389 @@
+/* ULTRA-PREMIUM CITI-BOOKS DESIGN SYSTEM */
+.employee-app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  background: var(--bg-page);
+  font-family: var(--font-main);
+  padding-bottom: 120px; /* More space for the high-end floating button */
+}
+
+.employee-content {
+  padding: 24px 20px;
+  gap: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* AUTHENTIC BRAND HERO */
+.employee-hero-card {
+  background: linear-gradient(135deg, var(--citi-purple) 0%, #4a2b70 100%);
+  border-radius: 40px;
+  padding: 40px 28px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(94, 58, 141, 0.3);
+}
+
+.employee-hero-card::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 180px;
+  height: 180px;
+  background: var(--citi-green);
+  opacity: 0.15;
+  border-radius: 50%;
+  filter: blur(40px);
+}
+
+.employee-hero-card::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: -20px;
+  width: 120px;
+  height: 120px;
+  background: var(--citi-blue);
+  opacity: 0.1;
+  border-radius: 50%;
+  filter: blur(30px);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.date-chip {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: inline-block;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.time-heavy {
+  font-size: 4rem;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  margin-bottom: 8px;
+  line-height: 0.85;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.welcome-msg {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* FLOATING BRAND ACTION BUTTON */
+.check-in-btn-premium {
+  position: fixed;
+  bottom: 24px;
+  left: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: #111827;
+  color: white;
+  border: none;
+  border-radius: 24px;
+  padding: 20px 28px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  box-shadow: 0 20px 40px rgba(17, 24, 39, 0.4);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.check-in-btn-premium:active {
+  transform: scale(0.92) translateY(5px);
+}
+
+.check-in-btn-premium.is-checked-in {
+  background: var(--citi-green);
+  box-shadow: 0 20px 40px rgba(140, 198, 63, 0.35);
+}
+
+.check-in-btn-premium .icon {
+  font-size: 1.6rem;
+}
+
+/* STATS WITH GLASSMorphism */
+.stats-mini-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.stat-pill {
+  background: var(--bg-card);
+  padding: 24px;
+  border-radius: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 10px 30px -5px rgba(0,0,0,0.03);
+  border: 1px solid var(--border-thin);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-pill::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 4px; height: 100%;
+}
+
+.stat-pill:nth-child(1)::before { background: var(--citi-blue); }
+.stat-pill:nth-child(2)::before { background: var(--citi-green); }
+
+.stat-pill .label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-pill .value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+
+/* CARD SYSTEM */
+.employee-card {
+  background: var(--bg-card);
+  border-radius: 36px;
+  padding: 28px;
+  border: 1px solid var(--border-thin);
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.04);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.card-header h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0;
+  letter-spacing: -0.03em;
+}
+
+.count-badge {
+  background: var(--bg-page);
+  color: var(--text-sec);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 12px;
+}
+
+/* TASK ITEMS - High Contrast */
+.task-list-minimal {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.task-item-compact {
+  background: var(--bg-hover);
+  padding: 20px;
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-thin);
+}
+
+.task-item-compact:hover {
+  background: var(--bg-card);
+  transform: translateX(8px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.status-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+  border: 2px solid var(--border-bold);
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.status-circle.review { background: var(--citi-blue); border-color: var(--citi-blue); color: white; }
+.status-circle.done { background: var(--citi-green); border-color: var(--citi-green); color: white; }
+
+.task-title {
+  flex: 1;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.task-priority-tag {
+  font-size: 0.75rem;
+  padding: 5px 12px;
+  border-radius: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.task-priority-tag.high { background: #fee2e2; color: #ef4444; }
+.task-priority-tag.medium { background: #fef3c7; color: #d97706; }
+.task-priority-tag.low { background: #dcfce7; color: #16a34a; }
+
+/* HISTORY TABLE */
+.attendance-table-compact table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.attendance-table-compact th {
+  text-align: left;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  font-weight: 800;
+  padding: 0 16px 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.attendance-table-compact td {
+  padding: 16px;
+  background: var(--bg-page);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.attendance-table-compact td:first-child { border-radius: 20px 0 0 20px; }
+.attendance-table-compact td:last-child { border-radius: 0 20px 20px 0; }
+
+.status-tag {
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.status-tag.present { background: #dcfce7; color: #16a34a; }
+.status-tag.absent { background: #fee2e2; color: #ef4444; }
+
+/* QUICK NOTES AREA */
+.note-area {
+  width: 100%;
+  min-height: 140px;
+  background: var(--bg-page);
+  border: 1px solid var(--border-thin);
+  border-radius: 24px;
+  padding: 20px;
+  font-family: inherit;
+  font-size: 1.05rem;
+  color: var(--text-main);
+  line-height: 1.6;
+  resize: none;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.note-area:focus {
+  outline: none;
+  border-color: var(--citi-blue);
+  background: var(--bg-card);
+}
+
+/* LOCATION PORTAL MODAL */
+.location-portal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(20px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.portal-content {
+  background: var(--bg-card);
+  width: 100%;
+  max-width: 400px;
+  border-radius: 48px;
+  padding: 48px 40px;
+  text-align: center;
+  box-shadow: 0 40px 100px -20px rgba(0,0,0,0.5);
+}
+
+.portal-icon {
+  font-size: 4rem;
+  margin-bottom: 24px;
+}
+
+.portal-content h2 {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: var(--text-main);
+  margin-bottom: 16px;
+  letter-spacing: -0.04em;
+}
+
+.portal-content p {
+  color: var(--text-sec);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.grant-btn {
+  background: var(--citi-purple);
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 20px;
+  border-radius: 24px;
+  font-weight: 800;
+  font-size: 1.15rem;
+  cursor: pointer;
+  box-shadow: 0 15px 35px rgba(94, 58, 141, 0.3);
+  margin-bottom: 12px;
+}
+
+.deny-btn {
+  background: transparent;
+  color: var(--text-dim);
+  border: none;
+  padding: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}

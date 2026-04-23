@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="brand_blue">#3E7BBD</color>
-    <color name="brand_green">#90C845</color>
-    <color name="brand_purple">#4E3B80</color>
-    <color name="brand_purple_soft">#7A6893</color>
-    <color name="text_primary">#1D2130</color>
-    <color name="text_muted">#6D7488</color>
-</resources>

@@ -1,0 +1,52 @@
+.attendance-page {
+  display: grid;
+  gap: 32px;
+}
+
+.attendance-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.attendance-bar-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  background: #ffffff;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+.attendance-bar-item:hover {
+  background: #f9fafb;
+  border-color: var(--citi-blue);
+}
+
+.attendance-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.attendance-user-info strong {
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.attendance-user-info span {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.attendance-status {
+  font-weight: 700;
+  color: var(--citi-green);
+}
+
+.attendance-status.absent {
+  color: var(--status-error);
+}

@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* Brand Palette - Exact Logo Colors */
+  --citi-blue: #3E7BBD;
+  --citi-green: #8CC63F;
+  --citi-purple: #5E3A8D;
+  
+  /* System Palette - Premium Neutral Base */
+  --bg-page: #f4f7f9;
+  --bg-sidebar: #ffffff;
+  --bg-card: #ffffff;
+  --bg-hover: #f0f4f7;
+  
+  --primary: var(--citi-blue);
+  --primary-glow: rgba(62, 123, 189, 0.12);
+  --secondary: var(--citi-green);
+  --accent: var(--citi-purple);
+  
+  --text-main: #0f172a;
+  --text-sec: #475569;
+  --text-dim: #94a3b8;
+  
+  --border-thin: #e2e8f0;
+  --border-bold: #cbd5e1;
+  
+  /* Advanced Shadow System */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-flat: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lift: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+  --shadow-float: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-premium: rgba(0, 0, 0, 0.02) 0px 4px 16px, rgba(0, 0, 0, 0.02) 0px 8px 24px, rgba(0, 0, 0, 0.02) 0px 16px 56px;
+  
+  --radius-xl: 16px;
+  --radius-lg: 12px;
+  --radius-md: 8px;
+  --radius-sm: 6px;
+  
+  --font-main: 'Poppins', system-ui, -apple-system, sans-serif;
+  --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Brightened brand colors for Dark Mode pop */
+    --citi-blue: #4a9eff;
+    --citi-green: #a7e65a;
+    --citi-purple: #9d73d9;
+    
+    --bg-page: #0f172a;
+    --bg-sidebar: #1e293b;
+    --bg-card: #1e293b;
+    --bg-hover: #334155;
+    
+    --text-main: #f8fafc;
+    --text-sec: #cbd5e1;
+    --text-dim: #64748b;
+    
+    --border-thin: #334155;
+    --border-bold: #475569;
+    
+    --primary-glow: rgba(74, 158, 255, 0.15);
+    
+    /* Subtle shadows for dark mode */
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    --shadow-flat: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    --shadow-lift: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+  }
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  transition: background-color 0.3s, color 0.3s;
+}

@@ -1,0 +1,194 @@
+/* ─────────────────────────────────────────────
+   TOPBAR — Sticky header, menu trigger, user pill
+───────────────────────────────────────────── */
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 28px;
+  background: rgba(255, 255, 255, 0.88);
+  border-bottom: 1px solid var(--border-thin);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 64px;
+  flex-shrink: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .topbar {
+    background: rgba(30, 41, 59, 0.9);
+  }
+}
+
+/* ── Left side: hamburger + page title ── */
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.menu-trigger {
+  display: none;
+  background: var(--bg-page);
+  border: 1px solid var(--border-thin);
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.menu-trigger:hover { background: var(--bg-hover); }
+
+.menu-trigger span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--text-main);
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+
+.topbar-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.topbar-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Right side: actions + user pill ── */
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.lang-toggle {
+  background: var(--bg-page);
+  border: 1px solid var(--border-thin);
+  padding: 7px 12px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 0.72rem;
+  color: var(--text-sec);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.lang-toggle:hover { background: var(--bg-hover); }
+
+.admin-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 14px 4px 4px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-thin);
+  border-radius: 100px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+}
+
+.admin-pill:hover { box-shadow: var(--shadow-lift); }
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--citi-blue);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.82rem;
+  flex-shrink: 0;
+}
+
+.admin-details { display: flex; flex-direction: column; }
+
+.admin-pill strong {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.admin-pill span {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.topbar-logout {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--bg-page);
+  border: 1px solid var(--border-thin);
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--text-sec);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.topbar-logout:hover { background: var(--bg-hover); color: var(--text-main); }
+
+/* ───────────────────────────────────────
+   TABLET 768 – 1024px: show hamburger,
+   hide page title (space is tight)
+─────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .topbar {
+    padding: 0 16px;
+    height: 60px;
+  }
+
+  .menu-trigger { display: flex; }
+  .topbar-meta  { display: none; } /* page title hidden on tablet — sidebar visible on hover */
+
+  .admin-pill {
+    padding: 4px 10px 4px 4px;
+  }
+
+  .topbar-logout { display: none; } /* logout is in sidebar footer */
+}
+
+/* ───────────────────────────────────────
+   MOBILE < 768px: minimal topbar
+─────────────────────────────────────── */
+@media (max-width: 767px) {
+  .topbar { height: 56px; padding: 0 12px; }
+
+  .admin-details { display: none; }  /* only avatar shown */
+  .admin-pill { gap: 0; padding: 2px; border: none; box-shadow: none; background: transparent; }
+  .lang-toggle { padding: 6px 10px; font-size: 0.68rem; }
+}

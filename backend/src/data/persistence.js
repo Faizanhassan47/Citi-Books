@@ -1,6 +1,7 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
 import { env } from "../config/env.js";
 import { db } from "./mockDb.js";
+import { normalizeUserPasswords } from "../utils/passwords.js";
 
 const collectionNames = [
   "users",
@@ -10,7 +11,9 @@ const collectionNames = [
   "categories",
   "subcategories",
   "demands",
-  "bills"
+  "bills",
+  "inventory",
+  "logs"
 ];
 
 let client;
@@ -26,6 +29,8 @@ function getCollection(name) {
 }
 
 export async function initPersistence() {
+  normalizeUserPasswords(db.users);
+
   client = new MongoClient(env.mongodbUri, {
     serverApi: {
       version: ServerApiVersion.v1,
@@ -48,6 +53,11 @@ export async function initPersistence() {
 
     const documents = await collection.find({}).toArray();
     db[name].splice(0, db[name].length, ...documents.map(normalizeDocument));
+
+    if (name === "users" && normalizeUserPasswords(db.users)) {
+      await collection.deleteMany({});
+      await collection.insertMany(db.users);
+    }
   }
 
   console.log(`MongoDB connected to database "${env.databaseName}"`);

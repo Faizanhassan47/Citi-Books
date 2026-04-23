@@ -184,5 +184,7 @@ export const db = {
       accessUsers: ["EMP002"],
       createdBy: "OWN001"
     }
-  ]
+  ],
+  inventory: [],
+  logs: []
 };

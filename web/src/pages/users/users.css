@@ -1,0 +1,223 @@
+.users-page {
+  display: grid;
+  gap: 32px;
+}
+
+.users-page .field.full {
+  grid-column: 1 / -1;
+}
+
+.users-toolbar {
+  margin: 0;
+}
+
+.users-toolbar-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: end;
+}
+
+.users-toolbar-count {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 48px;
+  color: var(--text-dim);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.users-table table {
+  min-width: 900px;
+}
+
+.user-summary,
+.user-login {
+  display: grid;
+  gap: 4px;
+}
+
+.user-summary strong,
+.user-login strong {
+  color: var(--text-main);
+}
+
+.user-code,
+.user-login span {
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.user-code {
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.user-role-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.user-action-stack {
+  align-items: flex-start;
+}
+
+.users-page .inline-button.user-edit-button,
+.users-page .inline-button.user-role-button {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.users-page .inline-button.user-edit-button:hover,
+.users-page .inline-button.user-role-button:hover {
+  background: #dbeafe;
+}
+
+.users-card-grid {
+  display: none;
+  gap: 16px;
+}
+
+.user-card {
+  display: grid;
+  gap: 16px;
+}
+
+.user-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.user-card-headings {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.user-card-headings strong {
+  font-size: 1rem;
+  color: var(--text-main);
+}
+
+.user-card-headings span {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.user-card-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.user-card-detail {
+  display: grid;
+  gap: 5px;
+  padding: 12px 14px;
+  background: var(--bg-page);
+  border: 1px solid var(--border-thin);
+  border-radius: 14px;
+}
+
+.user-card-detail label {
+  color: var(--text-dim);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.user-card-detail span {
+  color: var(--text-main);
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.user-card-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.user-card-actions {
+  padding-top: 4px;
+  border-top: 1px solid var(--border-thin);
+}
+
+.users-empty {
+  min-height: 160px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: var(--text-dim);
+}
+
+.users-empty p {
+  margin: 0;
+}
+
+.user-drawer-note {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--border-thin);
+  background: var(--bg-page);
+  color: var(--text-sec);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 1100px) {
+  .users-toolbar-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .users-toolbar-count {
+    justify-content: flex-start;
+    min-height: auto;
+  }
+
+  .users-table {
+    display: none;
+  }
+
+  .users-card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .users-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .user-card-header {
+    flex-direction: column;
+  }
+
+  .user-card-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .user-action-stack {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+  }
+
+  .user-action-stack .inline-button {
+    width: 100%;
+    justify-content: center;
+  }
+}

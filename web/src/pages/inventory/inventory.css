@@ -1,0 +1,64 @@
+.inventory-page .inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.inventory-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-thin);
+  border-radius: 20px;
+  padding: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.inventory-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--citi-purple);
+  box-shadow: var(--shadow-lg);
+}
+
+.inventory-card .stock-level {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 20px;
+}
+
+.inventory-card .stock-level strong {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-base);
+}
+
+.inventory-card .stock-level .unit {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.inventory-card .threshold-warning {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px dashed var(--accent-pink);
+  color: var(--accent-pink);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.inventory-card .threshold-warning::before {
+  content: '⚠️';
+}
+
+.inventory-card .meta {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-thin);
+  display: flex;
+  justify-content: space-between;
+}
