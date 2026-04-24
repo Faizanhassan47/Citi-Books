@@ -6,6 +6,8 @@ import './tasks.css';
 export function Tasks() {
   const { user, tasks, users, fetchTasks, fetchUsers, loading } = useStore();
   const [searchTerm, setSearchTerm] = useState('');
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
 
   useEffect(() => {
     void fetchTasks();
@@ -14,14 +16,22 @@ export function Tasks() {
     }
   }, [fetchTasks, fetchUsers, user?.role]);
 
-  const handleCreateTask = async (e) => {
+  const handleSaveTask = async (e) => {
     e.preventDefault();
-    if (user?.role !== 'owner') return; // Double guard
+    if (user?.role !== 'owner') return;
+    
     const formData = new FormData(e.target);
     const payload = Object.fromEntries(formData.entries());
+    
     try {
-      await api.createTask(payload);
+      if (editingTask) {
+        await api.updateTask(editingTask.id, payload);
+      } else {
+        await api.createTask(payload);
+      }
       e.target.reset();
+      setEditingTask(null);
+      setIsDrawerOpen(false);
       fetchTasks();
     } catch (err) {
       console.error(err);
@@ -47,10 +57,19 @@ export function Tasks() {
     }
   };
 
+  const openEdit = (task) => {
+    setEditingTask(task);
+    setIsDrawerOpen(true);
+  };
+
+  const openCreate = () => {
+    setEditingTask(null);
+    setIsDrawerOpen(true);
+  };
+
   const employees = users.filter((user) => user.role === "employee" && user.isActive);
 
   const filteredTasks = tasks.filter((task) => {
-    // Role-based visibility: Employees only see their own or "All" tasks
     if (user?.role === 'employee') {
       const isMyTask = task.assignee === user.userCode || task.assignee === 'All';
       if (!isMyTask) return false;
@@ -58,12 +77,11 @@ export function Tasks() {
 
     if (!searchTerm) return true;
     const q = searchTerm.toLowerCase();
-    return [task.title, task.assignee, task.priority, task.status]
+    return [task.title, task.description, task.assignee, task.priority, task.status]
       .filter((val) => typeof val === 'string')
       .some((value) => value.toLowerCase().includes(q));
   });
 
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [draggedTaskId, setDraggedTaskId] = useState(null);
 
   const pendingTasks = filteredTasks.filter(t => t.status === 'pending');
@@ -81,7 +99,7 @@ export function Tasks() {
   };
 
   const handleDragOver = (e) => {
-    e.preventDefault(); // necessary to allow dropping
+    e.preventDefault();
   };
 
   return (
@@ -94,7 +112,7 @@ export function Tasks() {
         </div>
         <div className="header-actions">
           {user?.role === 'owner' && (
-            <button className="button" onClick={() => setIsDrawerOpen(true)}>+ Create Task</button>
+            <button className="button" onClick={openCreate}>+ Create Task</button>
           )}
           <div className="field" style={{ minWidth: '280px' }}>
             <input 
@@ -135,9 +153,19 @@ export function Tasks() {
                    {task.priority}
                 </span>
               </div>
+              {task.description && (
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-sec)', margin: '0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                  {task.description}
+                </p>
+              )}
               <div className="task-actions">
                 <button className="task-action-btn" onClick={() => handleUpdateStatus(task.id, 'in-progress')}>Start →</button>
-                {user?.role === 'owner' && <button className="task-action-btn" style={{color: 'var(--accent-pink, red)'}} onClick={() => handleDeleteTask(task.id)}>Delete</button>}
+                {user?.role === 'owner' && (
+                  <>
+                    <button className="task-action-btn" onClick={() => openEdit(task)}>Edit</button>
+                    <button className="task-action-btn" style={{color: 'var(--accent-pink, red)'}} onClick={() => handleDeleteTask(task.id)}>Delete</button>
+                  </>
+                )}
               </div>
               <div className="task-card-footer">
                 <div className="task-assignee">
@@ -175,9 +203,19 @@ export function Tasks() {
                    {task.priority}
                 </span>
               </div>
+              {task.description && (
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-sec)', margin: '0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                  {task.description}
+                </p>
+              )}
               <div className="task-actions">
                 <button className="task-action-btn" onClick={() => handleUpdateStatus(task.id, 'review')}>Submit for Review ✓</button>
-                {user?.role === 'owner' && <button className="task-action-btn" style={{color: 'var(--accent-pink, red)'}} onClick={() => handleDeleteTask(task.id)}>Delete</button>}
+                {user?.role === 'owner' && (
+                  <>
+                    <button className="task-action-btn" onClick={() => openEdit(task)}>Edit</button>
+                    <button className="task-action-btn" style={{color: 'var(--accent-pink, red)'}} onClick={() => handleDeleteTask(task.id)}>Delete</button>
+                  </>
+                )}
               </div>
               <div className="task-card-footer">
                 <div className="task-assignee">
@@ -213,10 +251,20 @@ export function Tasks() {
                 <h5 className="task-card-title">{task.title}</h5>
                 <span className={`status-badge blue`}>review</span>
               </div>
+              {task.description && (
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-sec)', margin: '0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                  {task.description}
+                </p>
+              )}
               <div className="task-actions">
                 <button className="task-action-btn" onClick={() => handleUpdateStatus(task.id, 'done')}>Verify & Complete ✓</button>
                 <button className="task-action-btn" onClick={() => handleUpdateStatus(task.id, 'in-progress')}>← Send Back</button>
-                {user?.role === 'owner' && <button className="task-action-btn" style={{color: 'var(--accent-pink, red)'}} onClick={() => handleDeleteTask(task.id)}>Delete</button>}
+                {user?.role === 'owner' && (
+                  <>
+                    <button className="task-action-btn" onClick={() => openEdit(task)}>Edit</button>
+                    <button className="task-action-btn" style={{color: 'var(--accent-pink, red)'}} onClick={() => handleDeleteTask(task.id)}>Delete</button>
+                  </>
+                )}
               </div>
               <div className="task-card-footer">
                 <div className="task-assignee">
@@ -253,8 +301,15 @@ export function Tasks() {
                 <span className={`status-badge green`}>completed</span>
               </div>
               
+              {task.description && (
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-sec)', margin: '0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                  {task.description}
+                </p>
+              )}
+
               {user?.role === 'owner' && (
                 <div className="task-actions" style={{ marginBottom: '12px' }}>
+                  <button className="task-action-btn" onClick={() => openEdit(task)}>Edit</button>
                   <button className="task-action-btn" style={{color: 'var(--accent-pink, red)'}} onClick={() => handleDeleteTask(task.id)}>Delete</button>
                 </div>
               )}
@@ -272,28 +327,41 @@ export function Tasks() {
 
       </section>
 
-      {/* Side Drawer Create Form - OWNER ONLY */}
+      {/* Side Drawer Form - OWNER ONLY */}
       {user?.role === 'owner' && (
         <>
           <div className={`side-drawer-overlay ${isDrawerOpen ? 'is-open' : ''}`} onClick={() => setIsDrawerOpen(false)}></div>
           <aside className={`side-drawer ${isDrawerOpen ? 'is-open' : ''}`}>
             <div className="drawer-header">
-              <h3 className="section-title" style={{ margin: 0 }}>Create New Task</h3>
+              <h3 className="section-title" style={{ margin: 0 }}>{editingTask ? 'Edit Task' : 'Create New Task'}</h3>
               <button className="drawer-close" onClick={() => setIsDrawerOpen(false)}>×</button>
             </div>
             
-            <form className="field" style={{ gap: '24px' }} onSubmit={(e) => {
-              handleCreateTask(e);
-              setIsDrawerOpen(false); 
-            }}>
+            <form className="field" style={{ gap: '24px' }} onSubmit={handleSaveTask}>
               <div className="field">
                 <label>Task title</label>
-                <input name="title" placeholder="Describe the task..." required />
+                <input name="title" defaultValue={editingTask?.title || ''} placeholder="Describe the task..." required />
+              </div>
+
+              <div className="field">
+                <label>Description</label>
+                <textarea 
+                  name="description" 
+                  defaultValue={editingTask?.description || ''} 
+                  placeholder="Add more details about this task..."
+                  style={{ 
+                    minHeight: '120px', 
+                    borderRadius: '16px', 
+                    padding: '16px',
+                    borderColor: 'var(--border-thin)',
+                    resize: 'vertical'
+                  }}
+                />
               </div>
               
               <div className="field">
                 <label>Assignee</label>
-                <select name="assignee" required>
+                <select name="assignee" defaultValue={editingTask?.assignee || ''} required>
                   <option value="">Select Employee</option>
                   {employees.map((user) => <option key={user.userCode} value={user.userCode}>{user.name}</option>)}
                 </select>
@@ -301,7 +369,7 @@ export function Tasks() {
               
               <div className="field">
                 <label>Priority</label>
-                <select name="priority">
+                <select name="priority" defaultValue={editingTask?.priority || 'medium'}>
                   <option value="high">High</option>
                   <option value="medium">Medium</option>
                   <option value="low">Low</option>
@@ -310,20 +378,23 @@ export function Tasks() {
               
               <div className="field">
                 <label>Due date</label>
-                <input name="dueDate" type="date" required />
+                <input name="dueDate" type="date" defaultValue={editingTask?.dueDate || ''} required />
               </div>
               
               <div className="field">
-                <label>Initial status</label>
-                <select name="status">
+                <label>Status</label>
+                <select name="status" defaultValue={editingTask?.status || 'pending'}>
                   <option value="pending">Pending</option>
                   <option value="in-progress">In Progress</option>
+                  <option value="review">Under Review</option>
                   <option value="done">Done</option>
                 </select>
               </div>
               
               <div className="action-row" style={{ marginTop: '16px' }}>
-                <button className="button" type="submit" style={{ width: '100%' }}>Deploy Task</button>
+                <button className="button" type="submit" style={{ width: '100%' }}>
+                  {editingTask ? 'Save Changes' : 'Deploy Task'}
+                </button>
               </div>
             </form>
           </aside>

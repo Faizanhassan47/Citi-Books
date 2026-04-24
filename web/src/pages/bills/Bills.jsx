@@ -110,17 +110,13 @@ export function Bills() {
   const [uploadedByFilter, setUploadedByFilter] = useState('all');
   const [uploadDateFilter, setUploadDateFilter] = useState('');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [selectedUpload, setSelectedUpload] = useState(null);
 
   const loadData = useCallback(async () => {
     setLoading(true);
-
     try {
       const requests = [api.getBills()];
-
-      if (!isEmployee) {
-        requests.push(api.getUsers());
-      }
-
+      if (!isEmployee) requests.push(api.getUsers());
       const [billsData, usersData = []] = await Promise.all(requests);
       setBills(billsData);
       setUsers(usersData);
@@ -152,16 +148,11 @@ export function Bills() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (isSubmitting) {
-      return;
-    }
+    if (isSubmitting) return;
 
     const form = e.currentTarget;
     const formData = new FormData(form);
-    const accessUsers = formData
-      .getAll('accessUsers')
-      .filter((value) => typeof value === 'string' && value.trim() !== '');
+    const accessUsers = formData.getAll('accessUsers').filter(v => typeof v === 'string' && v.trim() !== '');
     const payload = {
       title: String(formData.get('title') || '').trim(),
       amount: Number(formData.get('amount')),
@@ -177,33 +168,20 @@ export function Bills() {
 
     try {
       setIsSubmitting(true);
-
       if (file instanceof File && file.size > 0) {
         payload.imageData = await compressImage(file);
       }
-
-      const response = editingBill
-        ? await api.updateBill(editingBill.id, payload)
-        : await api.createBill(payload);
-
+      const response = editingBill ? await api.updateBill(editingBill.id, payload) : await api.createBill(payload);
       if (response?.offline) {
         toast(response.message || 'Bill saved offline. It will sync automatically.');
-      } else if (editingBill) {
-        toast.success('Bill updated successfully');
       } else {
-        toast.success('Bill saved successfully');
+        toast.success(editingBill ? 'Bill updated successfully' : 'Bill saved successfully');
       }
-
       form.reset();
       closeDrawer();
       await loadData();
     } catch (error) {
-      if (error instanceof Error && error.message === 'Failed to read the selected image') {
-        toast.error(error.message);
-      } else {
-        toast.error(error instanceof Error ? error.message : 'Unable to save bill');
-      }
-
+      toast.error(error instanceof Error ? error.message : 'Unable to save bill');
       console.error(error);
     } finally {
       setIsSubmitting(false);
@@ -214,6 +192,9 @@ export function Bills() {
     try {
       await api.updateBillStatus(billId, 'paid', 'Direct cash');
       toast.success('Bill marked as paid');
+      if (selectedUpload && selectedUpload.billId === billId) {
+        setSelectedUpload(prev => ({ ...prev, status: 'paid' }));
+      }
       await loadData();
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Unable to update bill status');
@@ -226,6 +207,7 @@ export function Bills() {
     try {
       await api.deleteBill(billId);
       toast.success('Bill deleted');
+      setSelectedUpload(null);
       await loadData();
     } catch (error) {
       toast.error('Failed to delete bill');
@@ -268,7 +250,7 @@ export function Bills() {
           <div className="header-copy">
             <span className="eyebrow">My Bill Submissions</span>
             <h2 className="section-title">Bills I Uploaded</h2>
-            <p className="section-copy">View and update your own bill submissions. You cannot delete or view other staff bills.</p>
+            <p className="section-copy">View and update your own bill submissions.</p>
           </div>
           <div className="header-actions">
             <button className="button" type="button" onClick={openCreateDrawer}>
@@ -317,7 +299,6 @@ export function Bills() {
                       type="button"
                       onClick={() => openEditDrawer(bill)}
                       disabled={bill.status === 'paid'}
-                      title={bill.status === 'paid' ? 'Paid bills cannot be edited' : 'Edit this bill'}
                     >
                       Edit
                     </button>
@@ -367,7 +348,7 @@ export function Bills() {
         <div className="header-copy">
           <span className="eyebrow">Financial Records</span>
           <h2 className="section-title">Bill Image Library</h2>
-          <p className="section-copy">Browse, filter, and review every uploaded bill image.</p>
+          <p className="section-copy">Browse, filter, and review every uploaded bill image. Click an image to expand.</p>
         </div>
         <div className="header-actions">
           <button className="button" type="button" onClick={openCreateDrawer}>+ Upload Bill</button>
@@ -415,7 +396,7 @@ export function Bills() {
         {filteredUploads.length > 0 ? (
           filteredUploads.map((upload) => (
             <article key={upload.uploadKey} className="bill-gallery-card">
-              <div className="bill-gallery-image-container">
+              <div className="bill-gallery-image-container" onClick={() => setSelectedUpload(upload)} style={{ cursor: 'zoom-in' }}>
                 <img src={upload.imageUrl} alt={upload.billTitle} className="bill-gallery-image" />
                 <div style={{ position: 'absolute', top: '16px', right: '16px', display: 'flex', gap: '8px' }}>
                   {upload.status === 'paid'
@@ -429,46 +410,36 @@ export function Bills() {
               <div className="bill-gallery-meta">
                 <strong>{upload.billTitle}</strong>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span className="muted" style={{ fontWeight: 600 }}>Amount: Rs {Number(upload.amount || 0).toLocaleString()}</span>
+                  <span className="muted" style={{ fontWeight: 600 }}>Amt: Rs {Number(upload.amount || 0).toLocaleString()}</span>
                   <span className="status-badge pink" style={{ fontSize: '0.65rem', padding: '4px 8px' }}>Due: Rs {Number(upload.dueAmount || 0).toLocaleString()}</span>
                 </div>
 
                 <div className="bill-gallery-footer">
                   <div className="uploader-info">
                     <div className="uploader-avatar">{upload.uploadedByName?.charAt(0).toUpperCase() || upload.uploadedBy?.charAt(0).toUpperCase() || '?'}</div>
-                    <span style={{ maxWidth: '120px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <span style={{ maxWidth: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       {upload.uploadedByName || upload.uploadedBy}
                     </span>
                   </div>
                   <div className="action-row" style={{ gap: '8px' }}>
-                    {upload.status !== 'paid' && upload.isCurrent && (
-                      <button
-                        className="inline-button success"
-                        type="button"
-                        style={{ padding: '6px 12px', fontSize: '0.7rem' }}
-                        onClick={() => handleMarkPaid(upload.billId)}
-                      >
-                        Mark Paid
-                      </button>
-                    )}
+                    <button
+                      className="inline-button success"
+                      type="button"
+                      style={{ padding: '6px 10px', fontSize: '0.7rem' }}
+                      onClick={() => setSelectedUpload(upload)}
+                    >
+                      View
+                    </button>
                     {!isEmployee && (
                       <button
                         className="inline-button danger"
                         type="button"
-                        style={{ padding: '6px 12px', fontSize: '0.7rem' }}
+                        style={{ padding: '6px 10px', fontSize: '0.7rem' }}
                         onClick={() => handleDelete(upload.billId)}
                       >
                         Delete
                       </button>
                     )}
-                    <button
-                      className="ghost-button"
-                      type="button"
-                      style={{ padding: '6px 10px', borderRadius: '50px', fontSize: '0.75rem', gap: '4px' }}
-                      onClick={() => shareOnWhatsApp('', `Hi, checking on Bill: ${upload.billTitle}. Status: ${upload.status?.toUpperCase() || 'PENDING'}. Total Amount: Rs ${Number(upload.amount).toLocaleString()}. Please verify.`)}
-                    >
-                      Share
-                    </button>
                   </div>
                 </div>
               </div>
@@ -481,6 +452,70 @@ export function Bills() {
           </div>
         )}
       </div>
+
+      {/* Bill Viewer Lightbox Modal */}
+      {selectedUpload && (
+        <div className="bill-viewer-overlay" onClick={() => setSelectedUpload(null)}>
+          <div className="bill-viewer-content" onClick={e => e.stopPropagation()}>
+            <button className="viewer-close-btn" onClick={() => setSelectedUpload(null)}>×</button>
+            <div className="viewer-image-side">
+              <img src={selectedUpload.imageUrl} alt={selectedUpload.billTitle} />
+            </div>
+            <div className="viewer-info-side">
+              <div className="viewer-tag">#BillRecord</div>
+              <h1 className="viewer-title">{selectedUpload.billTitle}</h1>
+              <p style={{ color: '#888', margin: 0 }}>Detailed financial scan for documentation and tracking.</p>
+              
+              <div className="viewer-meta-row">
+                <div className="viewer-meta-item">📅 {new Date(selectedUpload.uploadedAt || Date.now()).toLocaleDateString()}</div>
+                <div className="viewer-meta-item">👤 {selectedUpload.uploadedByName || selectedUpload.uploadedBy}</div>
+                <div className="viewer-meta-item">💰 Rs {Number(selectedUpload.amount).toLocaleString()}</div>
+              </div>
+
+              <div className="viewer-rating-card">
+                <div className="viewer-rating-main">
+                  <span className="viewer-rating-star">⭐</span>
+                  <span className="viewer-rating-val">{selectedUpload.status === 'paid' ? '5.0' : 'pending'}</span>
+                  <span className="viewer-rating-sub">/ status breakdown</span>
+                </div>
+                <div className="viewer-rating-breakdown">
+                  <div className="rating-bar-row">
+                    <span className="rating-bar-label">Paid</span>
+                    <div className="rating-bar-track">
+                      <div className="rating-bar-fill" style={{ width: selectedUpload.status === 'paid' ? '100%' : '0%', background: '#2dd4bf' }}></div>
+                    </div>
+                  </div>
+                  <div className="rating-bar-row">
+                    <span className="rating-bar-label">Due</span>
+                    <div className="rating-bar-track">
+                      <div className="rating-bar-fill" style={{ width: selectedUpload.status !== 'paid' ? '100%' : '0%', background: '#f43f5e' }}></div>
+                    </div>
+                  </div>
+                </div>
+                <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '8px' }}>
+                  Current outstanding amount for this record: **Rs {Number(selectedUpload.dueAmount).toLocaleString()}**
+                </p>
+              </div>
+
+              <div className="action-row" style={{ gap: '16px', marginTop: 'auto' }}>
+                {selectedUpload.status !== 'paid' && selectedUpload.isCurrent && (
+                  <button className="button success" onClick={() => handleMarkPaid(selectedUpload.billId)} style={{ flex: 1 }}>Mark as Paid</button>
+                )}
+                {!isEmployee && (
+                  <button className="button danger" onClick={() => handleDelete(selectedUpload.billId)} style={{ flex: 1 }}>Delete Record</button>
+                )}
+                <button 
+                  className="button" 
+                  style={{ background: '#25D366' }}
+                  onClick={() => shareOnWhatsApp('', `Hi, checking on Bill: ${selectedUpload.billTitle}. Status: ${selectedUpload.status?.toUpperCase()}. Due: Rs ${Number(selectedUpload.dueAmount).toLocaleString()}.`)}
+                >
+                  WhatsApp
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className={`side-drawer-overlay ${isDrawerOpen ? 'is-open' : ''}`} onClick={closeDrawer}></div>
       <aside className={`side-drawer ${isDrawerOpen ? 'is-open' : ''}`}>
