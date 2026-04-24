@@ -75,13 +75,7 @@ export function Auth() {
             </button>
           </form>
           
-          <div className="auth-help">
-            <p>System Guidelines</p>
-            <div className="chip-row">
-             <span className="status-badge purple">Owner demo: owner / owner123</span>
-              <span className="status-badge blue">Employee demo: employee / employee123</span
-            </div>
-          </div>
+
         </article>
       </div>
     </section>
