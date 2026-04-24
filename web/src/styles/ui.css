@@ -196,6 +196,31 @@ h1, h2, h3, h4 {
 .inline-button.danger  { background: #fee2e2; color: #ef4444; }
 .inline-button.danger:hover  { background: #fecaca; }
 
+.whatsapp-button {
+  background: #25D366;
+  color: #fff;
+  border: none;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition-bounce);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+  text-decoration: none;
+}
+
+.whatsapp-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+  background-color: #22c55e;
+}
+
+.whatsapp-button:active {
+  transform: scale(0.96);
+}
+
 /* ── Forms ── */
 .field {
   display: flex;

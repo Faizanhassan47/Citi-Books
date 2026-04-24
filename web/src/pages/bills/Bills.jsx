@@ -425,16 +425,23 @@ export function Bills() {
                     <button
                       className="inline-button success"
                       type="button"
-                      style={{ padding: '6px 10px', fontSize: '0.7rem' }}
+                      style={{ padding: '6px 10px', fontSize: '0.75rem' }}
                       onClick={() => setSelectedUpload(upload)}
                     >
-                      View
+                      View Full
+                    </button>
+                    <button 
+                      className="whatsapp-button" 
+                      style={{ padding: '6px 10px', borderRadius: '12px', fontSize: '0.75rem' }}
+                      onClick={() => shareOnWhatsApp('', `Bill: ${upload.billTitle}\nStatus: ${upload.status?.toUpperCase()}\nAmount: Rs ${Number(upload.amount).toLocaleString()}`)}
+                    >
+                      Share
                     </button>
                     {!isEmployee && (
                       <button
                         className="inline-button danger"
                         type="button"
-                        style={{ padding: '6px 10px', fontSize: '0.7rem' }}
+                        style={{ padding: '6px 10px', fontSize: '0.75rem' }}
                         onClick={() => handleDelete(upload.billId)}
                       >
                         Delete
@@ -499,17 +506,17 @@ export function Bills() {
 
               <div className="action-row" style={{ gap: '16px', marginTop: 'auto' }}>
                 {selectedUpload.status !== 'paid' && selectedUpload.isCurrent && (
-                  <button className="button success" onClick={() => handleMarkPaid(selectedUpload.billId)} style={{ flex: 1 }}>Mark as Paid</button>
+                  <button className="button success" onClick={() => handleMarkPaid(selectedUpload.billId)} style={{ flex: 1 }}>Mark Paid</button>
                 )}
                 {!isEmployee && (
-                  <button className="button danger" onClick={() => handleDelete(selectedUpload.billId)} style={{ flex: 1 }}>Delete Record</button>
+                  <button className="button danger" onClick={() => handleDelete(selectedUpload.billId)} style={{ flex: 1 }}>Delete</button>
                 )}
                 <button 
-                  className="button" 
-                  style={{ background: '#25D366' }}
-                  onClick={() => shareOnWhatsApp('', `Hi, checking on Bill: ${selectedUpload.billTitle}. Status: ${selectedUpload.status?.toUpperCase()}. Due: Rs ${Number(selectedUpload.dueAmount).toLocaleString()}.`)}
+                  className="whatsapp-button"
+                  style={{ flex: 1, padding: '14px', borderRadius: '16px' }}
+                  onClick={() => shareOnWhatsApp('', `CitiBooks - Bill Details\n\nTitle: ${selectedUpload.billTitle}\nStatus: ${selectedUpload.status?.toUpperCase()}\nTotal: Rs ${Number(selectedUpload.amount).toLocaleString()}\nOutstanding: Rs ${Number(selectedUpload.dueAmount).toLocaleString()}\n\nPlease verify this record.`)}
                 >
-                  WhatsApp
+                  Send to WhatsApp
                 </button>
               </div>
             </div>

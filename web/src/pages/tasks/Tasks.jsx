@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../services/api.js';
 import { useStore } from '../../services/store.js';
+import { shareOnWhatsApp } from '../../utils/share.js';
 import './tasks.css';
 
 export function Tasks() {
@@ -308,9 +309,16 @@ export function Tasks() {
               )}
 
               {user?.role === 'owner' && (
-                <div className="task-actions" style={{ marginBottom: '12px' }}>
+                <div className="task-actions" style={{ marginBottom: '12px', display: 'flex', gap: '8px' }}>
                   <button className="task-action-btn" onClick={() => openEdit(task)}>Edit</button>
                   <button className="task-action-btn" style={{color: 'var(--accent-pink, red)'}} onClick={() => handleDeleteTask(task.id)}>Delete</button>
+                  <button 
+                    className="whatsapp-button"
+                    style={{ padding: '4px 10px', borderRadius: '8px', fontSize: '0.7rem' }}
+                    onClick={() => shareOnWhatsApp('', `CitiBooks Task Update:\n\nTitle: ${task.title}\nStatus: ${task.status?.toUpperCase()}\nPriority: ${task.priority?.toUpperCase()}\nDue: ${task.dueDate}\n\nDescription: ${task.description || 'N/A'}`)}
+                  >
+                    Share
+                  </button>
                 </div>
               )}
 
