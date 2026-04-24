@@ -78,8 +78,8 @@ export function Auth() {
           <div className="auth-help">
             <p>System Guidelines</p>
             <div className="chip-row">
-              <span className="status-badge purple">Super admin: ahammed_ali / 11223344</span>
-              <span className="status-badge blue">Demo accounts available in fallback mode</span>
+             <span className="status-badge purple">Owner demo: owner / owner123</span>
+              <span className="status-badge blue">Employee demo: employee / employee123</span
             </div>
           </div>
         </article>
