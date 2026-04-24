@@ -9,6 +9,8 @@ try {
   console.warn(error.message);
 }
 
-app.listen(env.port, () => {
-  console.log(`CitiBooks backend running on http://localhost:${env.port}`);
+const HOST = "0.0.0.0";
+
+app.listen(env.port, HOST, () => {
+  console.log(`CitiBooks backend running on port ${env.port}`);
 });
