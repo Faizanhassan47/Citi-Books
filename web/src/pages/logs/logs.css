@@ -1,0 +1,47 @@
+.logs-page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.logs-toolbar {
+  padding: 24px;
+}
+
+.logs-filters-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.logs-filters-grid .field {
+  min-width: 250px;
+  flex: 1;
+}
+
+.user-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar {
+  background: var(--primary-glow);
+  color: var(--citi-purple);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .logs-filters-grid {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
