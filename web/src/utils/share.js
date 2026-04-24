@@ -3,5 +3,7 @@ export const shareOnWhatsApp = (phone, text) => {
   const url = cleanPhone 
     ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`
     : `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
-  window.open(url, '_blank');
+  
+  // Using location.assign is more robust than window.open which is often blocked
+  window.location.assign(url);
 };

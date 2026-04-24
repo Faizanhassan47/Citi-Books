@@ -430,13 +430,15 @@ export function Bills() {
                     >
                       View Full
                     </button>
-                    <button 
+                    <a 
+                      href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`Bill: ${upload.billTitle}\nStatus: ${upload.status?.toUpperCase()}\nAmount: Rs ${Number(upload.amount).toLocaleString()}`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="whatsapp-button" 
-                      style={{ padding: '6px 10px', borderRadius: '12px', fontSize: '0.75rem' }}
-                      onClick={() => shareOnWhatsApp('', `Bill: ${upload.billTitle}\nStatus: ${upload.status?.toUpperCase()}\nAmount: Rs ${Number(upload.amount).toLocaleString()}`)}
+                      style={{ padding: '6px 10px', borderRadius: '12px', fontSize: '0.75rem', textDecoration: 'none' }}
                     >
                       Share
-                    </button>
+                    </a>
                     {!isEmployee && (
                       <button
                         className="inline-button danger"
@@ -460,64 +462,83 @@ export function Bills() {
         )}
       </div>
 
-      {/* Bill Viewer Lightbox Modal */}
+      {/* Bill Viewer Lightbox Modal (Pinterest Style Overhaul) */}
       {selectedUpload && (
         <div className="bill-viewer-overlay" onClick={() => setSelectedUpload(null)}>
-          <div className="bill-viewer-content" onClick={e => e.stopPropagation()}>
-            <button className="viewer-close-btn" onClick={() => setSelectedUpload(null)}>×</button>
-            <div className="viewer-image-side">
-              <img src={selectedUpload.imageUrl} alt={selectedUpload.billTitle} />
+          <header className="viewer-top-navigation">
+            <button className="viewer-back-btn" onClick={() => setSelectedUpload(null)}>←</button>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <button className="button" style={{ background: '#e60023', borderRadius: '24px' }}>Save</button>
+              <button className="drawer-close" style={{ background: 'var(--bg-card)' }} onClick={() => setSelectedUpload(null)}>×</button>
             </div>
-            <div className="viewer-info-side">
-              <div className="viewer-tag">#BillRecord</div>
-              <h1 className="viewer-title">{selectedUpload.billTitle}</h1>
-              <p style={{ color: '#888', margin: 0 }}>Detailed financial scan for documentation and tracking.</p>
+          </header>
+
+          <div className="bill-viewer-content-container">
+            <div className="viewer-card" onClick={e => e.stopPropagation()}>
+              <div className="viewer-image-side">
+                <img src={selectedUpload.imageUrl} alt={selectedUpload.billTitle} />
+              </div>
               
-              <div className="viewer-meta-row">
-                <div className="viewer-meta-item">📅 {new Date(selectedUpload.uploadedAt || Date.now()).toLocaleDateString()}</div>
-                <div className="viewer-meta-item">👤 {selectedUpload.uploadedByName || selectedUpload.uploadedBy}</div>
-                <div className="viewer-meta-item">💰 Rs {Number(selectedUpload.amount).toLocaleString()}</div>
-              </div>
-
-              <div className="viewer-rating-card">
-                <div className="viewer-rating-main">
-                  <span className="viewer-rating-star">⭐</span>
-                  <span className="viewer-rating-val">{selectedUpload.status === 'paid' ? '5.0' : 'pending'}</span>
-                  <span className="viewer-rating-sub">/ status breakdown</span>
-                </div>
-                <div className="viewer-rating-breakdown">
-                  <div className="rating-bar-row">
-                    <span className="rating-bar-label">Paid</span>
-                    <div className="rating-bar-track">
-                      <div className="rating-bar-fill" style={{ width: selectedUpload.status === 'paid' ? '100%' : '0%', background: '#2dd4bf' }}></div>
-                    </div>
+              <div className="viewer-info-side">
+                <div className="viewer-card-header">
+                  <div className="viewer-actions-top">
+                    <span className="viewer-action-icon" title="Like">❤️</span>
+                    <span className="viewer-action-icon" title="Comment">💬</span>
+                    <span className="viewer-action-icon" title="Share" onClick={() => shareOnWhatsApp('', `Check this bill: ${selectedUpload.billTitle}`)}>📤</span>
+                    <span className="viewer-action-icon" title="More">•••</span>
                   </div>
-                  <div className="rating-bar-row">
-                    <span className="rating-bar-label">Due</span>
-                    <div className="rating-bar-track">
-                      <div className="rating-bar-fill" style={{ width: selectedUpload.status !== 'paid' ? '100%' : '0%', background: '#f43f5e' }}></div>
-                    </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontWeight: 600 }}>{user?.name || 'M Faizan'}</span>
+                    <span>⌄</span>
                   </div>
                 </div>
-                <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '8px' }}>
-                  Current outstanding amount for this record: **Rs {Number(selectedUpload.dueAmount).toLocaleString()}**
-                </p>
-              </div>
 
-              <div className="action-row" style={{ gap: '16px', marginTop: 'auto' }}>
-                {selectedUpload.status !== 'paid' && selectedUpload.isCurrent && (
-                  <button className="button success" onClick={() => handleMarkPaid(selectedUpload.billId)} style={{ flex: 1 }}>Mark Paid</button>
-                )}
-                {!isEmployee && (
-                  <button className="button danger" onClick={() => handleDelete(selectedUpload.billId)} style={{ flex: 1 }}>Delete</button>
-                )}
-                <button 
-                  className="whatsapp-button"
-                  style={{ flex: 1, padding: '14px', borderRadius: '16px' }}
-                  onClick={() => shareOnWhatsApp('', `CitiBooks - Bill Details\n\nTitle: ${selectedUpload.billTitle}\nStatus: ${selectedUpload.status?.toUpperCase()}\nTotal: Rs ${Number(selectedUpload.amount).toLocaleString()}\nOutstanding: Rs ${Number(selectedUpload.dueAmount).toLocaleString()}\n\nPlease verify this record.`)}
-                >
-                  Send to WhatsApp
-                </button>
+                <div className="viewer-tag">#BillRecord</div>
+                <h1 className="viewer-title">{selectedUpload.billTitle}</h1>
+                <p className="section-copy">Detailed financial scan for documentation and tracking purposes within the CitiBooks workspace.</p>
+                
+                <div className="viewer-uploader">
+                  <div className="uploader-avatar-lg">{selectedUpload.uploadedByName?.charAt(0).toUpperCase() || '?'}</div>
+                  <div>
+                    <div style={{ fontWeight: 800 }}>{selectedUpload.uploadedByName || selectedUpload.uploadedBy}</div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-sec)' }}>Uploader • {new Date(selectedUpload.uploadedAt || Date.now()).toLocaleDateString()}</div>
+                  </div>
+                </div>
+
+                <div className="action-row" style={{ gap: '16px', marginTop: '20px' }}>
+                  {selectedUpload.status !== 'paid' && selectedUpload.isCurrent && (
+                    <button className="button success" style={{ borderRadius: '24px' }} onClick={() => handleMarkPaid(selectedUpload.billId)}>Mark Paid</button>
+                  )}
+                  <a 
+                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`CitiBooks - Bill Details\n\nTitle: ${selectedUpload.billTitle}\nStatus: ${selectedUpload.status?.toUpperCase()}\nTotal: Rs ${Number(selectedUpload.amount).toLocaleString()}\nOutstanding: Rs ${Number(selectedUpload.dueAmount).toLocaleString()}`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="whatsapp-button"
+                    style={{ flex: 1, padding: '12px', borderRadius: '24px', textDecoration: 'none' }}
+                  >
+                    Send to WhatsApp
+                  </a>
+                  {!isEmployee && (
+                    <button className="button danger" style={{ borderRadius: '24px' }} onClick={() => handleDelete(selectedUpload.billId)}>Delete</button>
+                  )}
+                </div>
+
+                <div className="viewer-stats-row">
+                  <div className="viewer-stat-item">
+                    <span className="viewer-stat-label">Total Amt</span>
+                    <span className="viewer-stat-value">Rs {Number(selectedUpload.amount).toLocaleString()}</span>
+                  </div>
+                  <div className="viewer-stat-item">
+                    <span className="viewer-stat-label">Outstanding</span>
+                    <span className="viewer-stat-value" style={{ color: 'var(--accent-pink)' }}>Rs {Number(selectedUpload.dueAmount).toLocaleString()}</span>
+                  </div>
+                  <div className="viewer-stat-item">
+                    <span className="viewer-stat-label">Status</span>
+                    <span className="viewer-stat-value" style={{ color: selectedUpload.status === 'paid' ? 'var(--citi-green)' : 'var(--accent-pink)' }}>
+                      {selectedUpload.status?.toUpperCase()}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

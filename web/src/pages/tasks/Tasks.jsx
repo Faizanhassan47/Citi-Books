@@ -312,13 +312,15 @@ export function Tasks() {
                 <div className="task-actions" style={{ marginBottom: '12px', display: 'flex', gap: '8px' }}>
                   <button className="task-action-btn" onClick={() => openEdit(task)}>Edit</button>
                   <button className="task-action-btn" style={{color: 'var(--accent-pink, red)'}} onClick={() => handleDeleteTask(task.id)}>Delete</button>
-                  <button 
+                  <a 
+                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`CitiBooks Task Update:\n\nTitle: ${task.title}\nStatus: ${task.status?.toUpperCase()}\nPriority: ${task.priority?.toUpperCase()}\nDue: ${task.dueDate}\n\nDescription: ${task.description || 'N/A'}`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="whatsapp-button"
-                    style={{ padding: '4px 10px', borderRadius: '8px', fontSize: '0.7rem' }}
-                    onClick={() => shareOnWhatsApp('', `CitiBooks Task Update:\n\nTitle: ${task.title}\nStatus: ${task.status?.toUpperCase()}\nPriority: ${task.priority?.toUpperCase()}\nDue: ${task.dueDate}\n\nDescription: ${task.description || 'N/A'}`)}
+                    style={{ padding: '4px 10px', borderRadius: '8px', fontSize: '0.7rem', textDecoration: 'none' }}
                   >
                     Share
-                  </button>
+                  </a>
                 </div>
               )}
 
